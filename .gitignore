@@ -44,5 +44,6 @@ CTestTestfile.cmake
 _deps
 
 /build
+out/build
 
 [Bb][Uu][Il][Ll][Dd]
