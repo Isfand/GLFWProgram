@@ -7,6 +7,11 @@ cmake_minimum_required (VERSION 3.8)
 file(GLOB GLFWProgram CONFIGURE_DEPENDS "*.h" "*.cpp")
 add_executable (GLFWProgram ${GLFWProgram})
 
+
+target_include_directories(${PROJECT_NAME} PUBLIC external/glfw/include)
+target_link_directories(${PROJECT_NAME} PRIVATE external/glfw/src )
+
+
 # TODO: Add tests and install targets if needed.
 
 
