@@ -5,7 +5,7 @@ cmake_minimum_required (VERSION 3.8)
 
 # Add source to this project's executable.
 file(GLOB GLFWProgram CONFIGURE_DEPENDS "*.h" "*.cpp")
-add_executable (GLFWProgram ${GLFWProgram})
+add_executable (${PROJECT_NAME} ${GLFWProgram})
 
 
 # TODO: Add tests and install targets if needed.
