@@ -11,3 +11,4 @@ git init														 // Initialise as git. Creates a .git folder in top direct
 git submodule add https://github.com/glfw/glfw.git external/glfw // Adds git sub directory into existing project. last part just means create a folder called external and another folder inside called glfw. This is done so you can add multiple sub directorys in one folder instead of many.
 git add -f <FileName> 											 // Adds the specific file or directory/folder
 git commit -am "Updated description"							 // Updates everything
+git submodule update --init --recursive                          // Grabs the sub module on a new clone
