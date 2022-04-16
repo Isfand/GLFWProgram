@@ -22,5 +22,7 @@ int main(void)
         glfwTerminate();
         exit(EXIT_FAILURE);
     }
-    glfwMakeContextCurrent(window);
+    while (1) {
+        glfwMakeContextCurrent(window);
+    }
 }
