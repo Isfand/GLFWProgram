@@ -43,7 +43,9 @@ compile_commands.json
 CTestTestfile.cmake
 _deps
 
-/build
+build/
 out/build
+.vs/
+.vscode/
 
 [Bb][Uu][Il][Ll][Dd]
