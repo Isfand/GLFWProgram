@@ -7,6 +7,7 @@ cmake_minimum_required (VERSION 3.8)
 file(GLOB GLFWProgram CONFIGURE_DEPENDS "*.h" "*.cpp")
 add_executable (GLFWProgram ${GLFWProgram})
 
+
 # TODO: Add tests and install targets if needed.
 
 
