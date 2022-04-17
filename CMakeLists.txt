@@ -28,9 +28,11 @@ find_package(Git QUIET)
 
     # Include sub-projects.
 find_package(OpenGL REQUIRED)
+
 add_subdirectory ("GLFWProgram")
 add_subdirectory (external/glfw)
 add_subdirectory(external/glad)
+
 target_include_directories(${PROJECT_NAME} PUBLIC external/glfw/include PUBLIC external/glad/include)
 target_link_directories(${PROJECT_NAME} PRIVATE external/glfw/src PRIVATE external/glad/src)
 target_link_libraries(${PROJECT_NAME} ${OPENGL_gl_LIBRARY} glfw glad)
