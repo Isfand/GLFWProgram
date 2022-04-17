@@ -22,10 +22,12 @@ find_package(Git QUIET)
     endif()
 
     # check all submodules
+        # Check glfw
     if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glfw/CMakeLists.txt")
         message(FATAL_ERROR "The glfw submodules was not downloaded! GIT_SUBMODULES was turned off or failed. Please checkout submodules")
     endif()
 
+        # Check glad
     if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glad/CMakeLists.txt")
         message(FATAL_ERROR "The glad submodules was not downloaded! GIT_SUBMODULES was turned off or failed. Please checkout submodules")
     endif()
