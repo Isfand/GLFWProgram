@@ -26,6 +26,10 @@ find_package(Git QUIET)
         message(FATAL_ERROR "The glfw submodules was not downloaded! GIT_SUBMODULES was turned off or failed. Please checkout submodules")
     endif()
 
+    if(NOT EXISTS "${PROJECT_SOURCE_DIR}/external/glad/CMakeLists.txt")
+        message(FATAL_ERROR "The glad submodules was not downloaded! GIT_SUBMODULES was turned off or failed. Please checkout submodules")
+    endif()
+
     # Include sub-projects.
 find_package(OpenGL REQUIRED)
 
