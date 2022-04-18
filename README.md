@@ -1,6 +1,8 @@
 GLFWProgram
 
-DEPENDENCIES: Git, CMake and ninja-build.
+DEPENDENCIES: 
+System Level: Git, CMake and ninja-build.
+Libraries: glfw, glad
 
 Any call with a VERSION lower than 3.13 will leave CMP0079 unset
 
