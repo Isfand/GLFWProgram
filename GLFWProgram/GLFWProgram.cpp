@@ -65,7 +65,6 @@ int main()
     glCompileShader(fragmentShader);
 
     GLuint shaderProgram = glCreateProgram();
-
     glAttachShader(shaderProgram, vertexShader);
     glAttachShader(shaderProgram, fragmentShader);
     glLinkProgram(shaderProgram);
