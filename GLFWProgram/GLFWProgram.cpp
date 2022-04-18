@@ -15,73 +15,36 @@ int main()
 {
     // glfw: initialize and configure
     // ------------------------------
-    glfwInit();
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
-    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
-    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
-
-#ifdef __APPLE__
-    glfwWindowHint(GLFW_OPENGL_FORWARD_COMPAT, GL_TRUE);
-#endif
+    glfwInit(); // Version 3.3(Major.Minor)
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3); // First major number of the version
+    glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Last minor number of the version
+    glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Core only contains modern while compatability contains both modern and old
 
     // glfw window creation
     // --------------------
     GLFWwindow* window = glfwCreateWindow(SCR_WIDTH, SCR_HEIGHT, WIN_NAME, NULL, NULL);
-    if (window == NULL)
+
+    if (window == NULL) // If window creation fails display message
     {
         std::cout << "Failed to create GLFW window" << std::endl;
         glfwTerminate();
         return -1;
     }
-    glfwMakeContextCurrent(window);
-    glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
 
-    // glad: load all OpenGL function pointers
-    // ---------------------------------------
-    if (!gladLoadGLLoader((GLADloadproc)glfwGetProcAddress))
+    glfwMakeContextCurrent(window);  // glfw create context/object. We want to use the window
+
+    gladLoadGL(); // Glad loads needed configurations for openGL
+    glViewport(0,0, 800,600); // Area of the window OpenGL renders in (bottom left to top right)(xy, xy)
+    glClearColor(0.10f, 0.50f, 0.10f, 1.0f); // RGBA (RED GREED BLUE ALPHA) ALPHA = COLOUR TRANSPARENCY. 1.0 means max value
+    glClear(GL_COLOR_BUFFER_BIT); // Execute the command we've told it to prepare for above
+    glfwSwapBuffers(window); // Only the back buffer has the color we want while the front buffer has a default(white) or nothing. So we swap them
+
+    while(!glfwWindowShouldClose(window)) // tells glfw to keep the window open
     {
-        std::cout << "Failed to initialize GLAD" << std::endl;
-        return -1;
-    }    
-
-    // render loop
-    // -----------
-    while (!glfwWindowShouldClose(window))
-    {
-        // input
-        // -----
-        processInput(window);
-
-        // render
-        // ------
-        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
-
-        // glfw: swap buffers and poll IO events (keys pressed/released, mouse moved etc.)
-        // -------------------------------------------------------------------------------
-        glfwSwapBuffers(window);
-        glfwPollEvents();
+        glfwPollEvents(); // Process all polled events so that the window is interactable. Such as resize, appearing, peripherals, etc.
     }
 
-    // glfw: terminate, clearing all previously allocated GLFW resources.
-    // ------------------------------------------------------------------
-    glfwTerminate();
+    glfwDestroyWindow(window);  // glfw terminate the window object
+    glfwTerminate();            // terminates the library and all contexts
     return 0;
-}
-
-// process all input: query GLFW whether relevant keys are pressed/released this frame and react accordingly
-// ---------------------------------------------------------------------------------------------------------
-void processInput(GLFWwindow *window)
-{
-    if(glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
-        glfwSetWindowShouldClose(window, true);
-}
-
-// glfw: whenever the window size changed (by OS or user resize) this callback function executes
-// ---------------------------------------------------------------------------------------------
-void framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    // make sure the viewport matches the new window dimensions; note that width and 
-    // height will be significantly larger than specified on retina displays.
-    glViewport(0, 0, width, height);
 }
