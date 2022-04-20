@@ -34,16 +34,16 @@ int main()
     // Triangle vertex cordinates. (Anti-clockwise)(X,Y,Z)
     GLfloat vertices[]=
     {
-        -0.5f, -0.5f, 0.0f,
-         0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f,
-         1.0f,  0.5f, 0.0f
+         0.5f,  0.5f, 0.0f,  // top right
+         0.5f, -0.5f, 0.0f,  // bottom right
+        -0.5f, -0.5f, 0.0f,  // bottom left
+        -0.5f,  0.5f, 0.0f   // top left 
     };
 
     GLuint indicies[]=
     {
         0,1,2,
-        1,3,2
+        2,0,3
     };
 
     // glfw window creation
@@ -113,7 +113,9 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_LINE); // wireframemode | Apply to front and back, and draw as lines
+        glDrawElements(GL_TRIANGLES, sizeof(indicies)/sizeof(GLuint), GL_UNSIGNED_INT, 0); // , Number of indicies,,
+        //glPolygonMode(GL_FRONT_AND_BACK, GL_FILL); // End wireframe mode
         glfwSwapBuffers(window);
 
         glfwPollEvents(); // Process all polled events so that the window is interactable. Such as resize, appearing, peripherals, etc.
