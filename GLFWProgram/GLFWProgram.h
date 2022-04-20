@@ -14,5 +14,3 @@
 #include <cmath>
 
 #endif
-
-// TODO: Reference additional headers your program requires here.

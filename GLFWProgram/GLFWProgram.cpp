@@ -1,6 +1,6 @@
 ﻿// GLFWProgram.cpp : Defines the entry point for the application.
-//
-
+// Src
+/**GLFWProgram for openGL practice**/
 #include "GLFWProgram.h"
 
 const char *vertexShaderSource = "#version 330 core\n"
@@ -31,7 +31,7 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Last minor number of the version
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Core only contains modern while compatability contains both modern and old
 
-    // Triangle vertex cordinates. (Anti-clockwise)(X,Y,Z)
+    // Vertex cordinates. (Anti-clockwise)(X,Y,Z)
     GLfloat vertices[]=
     {
          0.5f,  0.5f, 0.0f,  // top right
@@ -40,6 +40,7 @@ int main()
         -0.5f,  0.5f, 0.0f   // top left 
     };
 
+    // Used in Index buffer | Order in which shape assembly occurs
     GLuint indicies[]=
     {
         0,1,2,
@@ -82,7 +83,7 @@ int main()
     glDeleteShader(vertexShader); 
     glDeleteShader(fragmentShader);
 
-    // Vertex array and buffer object
+    // Vertex array, vertex buffer and element buffer object
     GLuint VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
