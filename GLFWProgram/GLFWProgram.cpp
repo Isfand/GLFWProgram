@@ -14,7 +14,7 @@ const char* fragmentShaderSource = "#version 330 core\n"
 "out vec4 FragColor;\n"
 "void main()\n"
 "{\n"
-"   FragColor = vec4(0.8f, 0.8f, 0.02f, 1.0f);\n"
+"   FragColor = vec4(0.8f, 0.8f, 0.00f, 1.0f);\n"
 "}\n\0";
 
 // settings
@@ -31,11 +31,19 @@ int main()
     glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3); // Last minor number of the version
     glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE); // Core only contains modern while compatability contains both modern and old
 
+    // Triangle vertex cordinates. (Anti-clockwise)(X,Y,Z)
     GLfloat vertices[]=
     {
         -0.5f, -0.5f, 0.0f,
          0.5f, -0.5f, 0.0f,
-         0.0f,  0.5f, 0.0f
+         0.0f,  0.5f, 0.0f,
+         1.0f,  0.5f, 0.0f
+    };
+
+    GLuint indicies[]=
+    {
+        0,1,2,
+        1,3,2
     };
 
     // glfw window creation
@@ -55,37 +63,45 @@ int main()
     glViewport(0,0, 800,600); // Area of the window OpenGL renders in (bottom left to top right)(xy, xy)
 
     // Vertex Shader
-    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER);
-    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
-    glCompileShader(vertexShader);
+    GLuint vertexShader = glCreateShader(GL_VERTEX_SHADER); // Get vertex shader reference 
+    glShaderSource(vertexShader, 1, &vertexShaderSource, NULL); // VertexShader, No. of Strings used for vertexShaderSource, reference to vertexShaderSource, if length is null each string is assumed to be null terminated
+    glCompileShader(vertexShader); // GPU cannot understand the source code so it needs to be compiled to machine code right away
 
     // Fragment Shader
-    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
+    GLuint fragmentShader = glCreateShader(GL_FRAGMENT_SHADER); // Get fragment shader reference 
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
 
-    GLuint shaderProgram = glCreateProgram();
-    glAttachShader(shaderProgram, vertexShader);
-    glAttachShader(shaderProgram, fragmentShader);
-    glLinkProgram(shaderProgram);
+    // In order to use the shaders we need to wrap them together in a shaderprogram which is what we will actually be using
+    GLuint shaderProgram = glCreateProgram(); //Get shaderProgram reference | Nothing needs to be specified inside because there is only one type of shader program.
+    glAttachShader(shaderProgram, vertexShader); // Attach vertex shader to the shader program
+    glAttachShader(shaderProgram, fragmentShader); // Attach fragment shader to the shader program
+    glLinkProgram(shaderProgram); // links the program object(ShaderProgram) specified by program
 
-    glDeleteShader(vertexShader);
+    // We can delete the shaders we created before because they are already in the program and to free space in memory.
+    glDeleteShader(vertexShader); 
     glDeleteShader(fragmentShader);
 
-    GLuint VAO, VBO;
+    // Vertex array and buffer object
+    GLuint VAO, VBO, EBO;
     glGenVertexArrays(1, &VAO);
     glGenBuffers(1, &VBO);
+    glGenBuffers(1, &EBO);
 
     glBindVertexArray(VAO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
     glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
 
-    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE, 3 * sizeof(float), (void*)0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, sizeof(indicies), indicies, GL_STATIC_DRAW);
+
+    glVertexAttribPointer(0,3,GL_FLOAT,GL_FALSE, 3 * sizeof(float), (void*)0); //Position of the first vertex, Number of vertexes, data type of vertex, Only matters if cordinates are of type int so false, amount of data between each vertex, offset(Point where our vertices being in the array)
     glEnableVertexAttribArray(0);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
     glBindVertexArray(0);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, 0);
 
     glClearColor(0.10f, 0.10f, 0.10f, 1.0f); // RGBA (RED GREED BLUE ALPHA) ALPHA = COLOUR TRANSPARENCY. 1.0 means max value
     glClear(GL_COLOR_BUFFER_BIT); // Execute the command we've told it to prepare for above
@@ -97,14 +113,16 @@ int main()
         glClear(GL_COLOR_BUFFER_BIT);
         glUseProgram(shaderProgram);
         glBindVertexArray(VAO);
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+        glDrawElements(GL_TRIANGLES, 6, GL_UNSIGNED_INT, 0);
         glfwSwapBuffers(window);
 
         glfwPollEvents(); // Process all polled events so that the window is interactable. Such as resize, appearing, peripherals, etc.
     }
 
+    // Delete all objects we've created
     glDeleteVertexArrays(1, &VAO);
     glDeleteBuffers(1, &VBO);
+    glDeleteBuffers(1, &EBO);
     glDeleteProgram(shaderProgram);
 
     glfwDestroyWindow(window);  // glfw terminate the window object
